@@ -49,17 +49,8 @@ def execute_sql_ddl_cmds(conn):
         """)
 
     try:
-        # read the connection parameters
-        # params = config()
 
-        # connecting to the PostgreSQL server
-        # conn = psycopg2.connect(params)
         print("Connecting to the PostgreSQL database")
-
-        # conn.autocommit = True
-
-        # create a cur object using cursor()
-        # cur = conn.cursor()
 
         # preparing query to create database
         # cur.execute("""CREATE database spark1;""")
@@ -73,8 +64,6 @@ def execute_sql_ddl_cmds(conn):
         # close communication with the PostgreSQL database server
         conn.close()
 
-        # commit the changes
-        # conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
     finally:
