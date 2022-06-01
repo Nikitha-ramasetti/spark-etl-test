@@ -1,5 +1,6 @@
 import requests
 import pandas as pd
+from python_src.db_connect import *
 
 
 def request_url(url):
@@ -14,6 +15,7 @@ def request_url(url):
 
 # Extract and transform data
 def users(endpoint1):
+
     # normalizing the JSON file and creating dataframe to obtain profile objects & column
     df_users = pd.json_normalize(endpoint1, sep='_')
 
@@ -39,13 +41,13 @@ def users(endpoint1):
 
 
 def subscriptions(endpoint1):
+
     # normalizing the JSON file and creating dataframe to extract subscription objects
     df_subsq = pd.json_normalize(endpoint1, meta=["id"], record_path=["subscription"], sep='_')
 
     # rename the column id to user_id
     df_subsq = df_subsq.rename(columns={"id": "user_id"})
 
-    # hashing
     df_subsq["createdat"] = pd.to_datetime(df_subsq["createdAt"])
     df_subsq["startdate"] = pd.to_datetime(df_subsq["startDate"])
     df_subsq["enddate"] = pd.to_datetime(df_subsq["endDate"])
@@ -57,6 +59,7 @@ def subscriptions(endpoint1):
 
 
 def messages(endpoint2):
+
     # normalizing the JSON file and create dataframe
     df_msg = pd.json_normalize(endpoint2, sep='_')
 

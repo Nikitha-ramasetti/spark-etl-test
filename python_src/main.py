@@ -1,3 +1,4 @@
+from python_src.db_connect import *
 from python_src.extract_transform import *
 
 
@@ -16,7 +17,6 @@ def extract_response():
 
 
 # Saving each dataframe in a separate variable executing functions
-
 def transform(endpoint):
     users_DF = users(endpoint[0])
     subscriptions_DF = subscriptions(endpoint[0])
@@ -26,21 +26,19 @@ def transform(endpoint):
 
 
 def load(dframe, table_name, conn_str):
-    # conn = getConnection('docker_user', 'docker', 'localhost', '5432')
-    # engine = create_engine(conn)
-    # conn = engine.connect()
     dframe.to_sql(table_name, conn_str, if_exists='append', index=False)
-    # subscriptions_DF.to_sql('subscriptions', conn, if_exists='append', index=False)
-    # messages_DF.to_sql('messages', conn, if_exists='append', index=False)
-    # conn.commit()
+
 
 #main
 endpoint = extract_response()
 res_df_list = transform(endpoint)
+
 conn, conn_str = getConnection('postgres', 'postgres', 'localhost', '5433')
 execute_sql_ddl_cmds(conn)
+
 load(res_df_list[0], 'users', conn_str)
 load(res_df_list[1], 'subscriptions', conn_str)
 load(res_df_list[2], 'messages', conn_str)
+
 print("Data inserted using to_sql() done successfully")
 print("Finish ETL")
